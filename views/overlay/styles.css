@@ -1,0 +1,18 @@
+.overlay {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    transition: opacity var(--transition-time-normal);
+    pointer-events: none;
+    opacity: 0;
+    background-color: var(--color-darker-300);
+}
+
+.visible {
+    pointer-events: initial;
+    opacity: 1;
+}

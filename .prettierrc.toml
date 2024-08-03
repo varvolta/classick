@@ -1,0 +1,4 @@
+semi = false
+singleQuote = true
+printWidth = 1000
+trailingComma = "none"

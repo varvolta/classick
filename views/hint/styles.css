@@ -1,0 +1,15 @@
+.hint {
+    position: fixed;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: opacity var(--transition-time-fast);
+    opacity: 0;
+    color: var(--color-text);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--color-primary-dark);
+    z-index: 1000;
+}
+
+.hint.visible {
+    opacity: 1;
+}
