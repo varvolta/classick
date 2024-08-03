@@ -6,6 +6,7 @@ import observable from './core/observable.js'
 import platform from './core/platform.js'
 import Styles from './core/styles.js'
 import Caller from './core/caller.js'
+import Api from './core/api.js'
 import View from './core/view.js'
 
 import Button from './views/button/index.js'
@@ -21,4 +22,8 @@ import './core/navigator.js'
 
 await Styles.initialize()
 
-export { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, View as View, Button, Fragment, Input, Menu, Icon, Radios, Tabs, Group }
+const Classicks = { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View, Button, Fragment, Input, Menu, Icon, Radios, Tabs, Group }
+
+export default Classicks
+
+export { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View, Button, Fragment, Input, Menu, Icon, Radios, Tabs, Group }

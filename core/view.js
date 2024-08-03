@@ -46,7 +46,7 @@ class View {
 		}
 
 		// Set class events
-		const inner = ['onMount', 'onUnmount', 'onLayout', 'onState', 'onAttribute']
+		const inner = ['onMount', 'onUnmount', 'onLayout', 'onState', 'onAttr']
 		const methods = methodsOf(this)
 		for (const method of methods) {
 			if (!method.startsWith('on') || inner.includes(method)) continue
@@ -110,7 +110,7 @@ class View {
 				delete attrs.aria
 			}
 
-			this.attrs = attributes(attrs, this.node, this.onAttribute)
+			this.attrs = attributes(attrs, this.node, this.onAttr)
 		}
 
 		// add predefined children and render them
@@ -188,7 +188,7 @@ class View {
 		this.#observableHandler(key, value, previous, operation, '_')
 	}
 
-	onAttribute(key, value) { }
+	onAttr(key, value) { }
 
 	remove() {
 		if (this.parent) {
