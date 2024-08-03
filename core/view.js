@@ -11,6 +11,7 @@ class View {
 
 	constructor({ props = {}, attrs = {}, state = {}, styles, classes = [], type = 'div', html, children = [], tabIndex = View.tabIndexCounter++ } = {}) {
 		this.attrs = attrs
+		// needs to be checked
 		// this.props = observable(props)
 		this.type = type
 		this.children = children

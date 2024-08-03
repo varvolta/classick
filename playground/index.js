@@ -4,6 +4,8 @@ const styles = await Styles.import(import.meta.resolve('./styles.css'))
 // for Electron and Chromium only
 // import styles from './styles.css' assert { type: 'css' }
 
+console.log(styles)
+
 class Text extends View {
 	constructor({ html, classes }) {
 		super({ html, classes, styles })
