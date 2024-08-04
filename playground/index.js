@@ -1,4 +1,4 @@
-import { View, Document, platform, Styles, Button } from '../index.js'
+import { View, Document, platform, Styles, Button } from '../src/index.js'
 const styles = await Styles.import(import.meta.resolve('./styles.css'))
 
 // for Electron and Chromium only

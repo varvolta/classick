@@ -1,0 +1,34 @@
+{
+	"name": "classick",
+	"version": "0.1",
+	"description": "Classick",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"scripts": {
+		"build": "tsc && cp -r ./src/assets ./dist/assets",
+		"prepublish": "yarn build"
+	},
+	"files": [
+		"/dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/varvolta/classick.git"
+	},
+	"keywords": [
+		"ui",
+		"framework",
+		"classick",
+		"classic"
+	],
+	"author": "Vahe Arzumanyan",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/varvolta/classick/issues"
+	},
+	"homepage": "https://github.com/varvolta/classick#readme",
+	"devDependencies": {
+		"typescript": "^5.5.4"
+	}
+}
