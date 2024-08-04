@@ -130,6 +130,7 @@ class View {
 
 	#observableHandler(key, value, previous, operation, getter) {
 		// TODO: Promise.resolve() or setTimeout is needed to skip the first cycle
+		console.log(key, value, previous, operation, getter)
 		Promise.resolve().then(() => {
 			if (previous !== value) {
 				const methods = methodsOf(this)

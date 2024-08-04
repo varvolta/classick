@@ -9,19 +9,10 @@ import Caller from './core/caller.js'
 import Api from './core/api.js'
 import View from './core/view.js'
 
-import Button from '../views/button/index.js'
-import Fragment from '../views/fragment/index.js'
-import Group from '../views/group/index.js'
-import Icon from '../views/icon/index.js'
-import Input from '../views/input/index.js'
-import Menu from '../views/menu/index.js'
-import Radios from '../views/radios/index.js'
-import Tabs from '../views/tabs/index.js'
-
 import './core/navigator.js'
 
-const Classick = { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View, Button, Fragment, Input, Menu, Icon, Radios, Tabs, Group }
+const Classick = { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View }
 
 export default Classick
 
-export { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View, Button, Fragment, Input, Menu, Icon, Radios, Tabs, Group }
+export { attributes, observable, Document, classes, fontsReady, platform, Styles, Caller, Api, View }

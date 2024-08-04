@@ -9,38 +9,31 @@ class Text extends View {
 		super({ html, classes, styles })
 	}
 
-	// $a(...args) {
-	// 	console.log('state', ...args)
+	// onState(key, value, previous, operation) {
+	// 	console.log({ key, value, previous, operation })
 	// }
 
-	// _b(...args) {
-	// 	console.log('props', ...args)
-	// }
-
-	// $a$c(...args) {
-	// 	console.log('state double', ...args)
-	// }
-	//
-	$(...args) {
-		console.log('$', ...args)
+	_a(...args) {
+		// console.log(...args)
 	}
+
 }
 
 class Playground extends View {
 	constructor() {
 		super()
-		console.log(platform())
+		// console.log(platform())
 
 		const text = new Text({ html: 'TEST TEXT' })
 		const button = new Button({})
 		this.append(text, button)
-		// text.state.a = 5
-		// text.props.b = 6
-		text.state.c = 50
-		text.state.c = 55
+		text.props.a = 5
+		// text.state.b = 6
+		// text.state.c = 50
+		// text.state.c = 55
 
-		console.log('state', text.state)
-		console.log('state.raw', text.state.raw)
+		// console.log('state', text.state)
+		// console.log('state.raw', text.state.raw)
 	}
 
 }

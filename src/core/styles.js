@@ -1,16 +1,6 @@
 import { kebabCase } from '../utils/cases.js'
 
 class Styles {
-	// static #initialized = false
-
-	// static async initialize() {
-	// 	if (!this.#initialized) {
-	// 		this.#initialized = true
-	// 		this.add(null, await Styles.import(import.meta.resolve('../assets/styles/normalize.css')))
-	// 		this.add(null, await Styles.import(import.meta.resolve('../assets/styles/easing.css')))
-	// 		this.add(null, await Styles.import(import.meta.resolve('../assets/styles/fonts.css')))
-	// 	}
-	// }
 
 	static add(view, ...styles) {
 		styles.forEach((style) => {
