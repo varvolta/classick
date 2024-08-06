@@ -1,5 +1,5 @@
-class Raw {
-	static import(path) {
+class Import {
+	static raw(path) {
 		return new Promise((resolve, reject) => {
 			fetch(path)
 				.then((response) => resolve(response.text()))
@@ -8,4 +8,4 @@ class Raw {
 	}
 }
 
-export default Raw
+export default Import
