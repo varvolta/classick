@@ -2,7 +2,7 @@ import { kebabCase } from '../utils/cases.js'
 import { methodsOf } from '../utils/methods.js'
 import attributes from './attributes.js'
 import cls from './cls.js'
-import allEvents from './events.js'
+import events from './events.js'
 import observable from './observable.js'
 import Styles from './styles.js'
 
@@ -62,7 +62,7 @@ class View {
 		for (const method of methods) {
 			if (!method.startsWith('on') || inner.includes(method)) continue
 			const eventName = method.slice(2).toLowerCase()
-			if (!allEvents.includes(eventName)) continue
+			if (!events.includes(eventName)) continue
 			const listener = this[method].bind(this)
 			this.node.addEventListener(eventName, (event) => {
 				// TODO: Check if propagation canceling is ok

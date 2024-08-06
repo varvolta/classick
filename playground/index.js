@@ -14,9 +14,11 @@ class Input extends View {
 		this.state.any = 'ererer'
 	}
 
-	$any(...args) {
+	$any$hello(...args) {
 		console.log(...args)
 	}
+
+	_asd() { }
 }
 
 
