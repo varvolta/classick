@@ -1,39 +1,43 @@
-import { View, Document, platform, Styles, Button } from '../src/index.js'
-const styles = await Styles.import(import.meta.resolve('./styles.css'))
+import { View, Document, platform, Import } from '../src/index.js'
+const styles = await Import.raw(import.meta.resolve('./styles.css'))
 
 // for Electron and Chromium only
 // import styles from './styles.css' assert { type: 'css' }
 
 class Text extends View {
-	constructor({ html, classes }) {
-		super({ html, classes, styles })
+	constructor({ content, classes }) {
+		super({ content, classes, styles })
+	}
+
+	onMount() {
+		console.log('mounted')
 	}
 
 	// onState(key, value, previous, operation) {
-	// 	console.log({ key, value, previous, operation })
+	// 	console.log(key, value, previous, operation)
 	// }
-
-	_a(...args) {
-		// console.log(...args)
+	//
+	$hello$any(...args) {
+		console.log(...args)
 	}
 
+	// $any(...args) {
+	// 	console.log(...args)
+	// }
 }
 
 class Playground extends View {
 	constructor() {
 		super()
-		// console.log(platform())
+		console.log(platform())
 
 		const text = new Text({ content: 'TEST TEXT' })
-		const button = new Button({})
-		this.append(text, button)
-		text.props.a = 5
-		// text.state.b = 6
-		// text.state.c = 50
-		// text.state.c = 55
+		this.append(text)
 
-		// console.log('state', text.state)
-		// console.log('state.raw', text.state.raw)
+		text.state.hello = 'world'
+		text.state.any = 'world2'
+		// text.props.asd = 'obj'
+		// text.props.asd = 'obj2'
 	}
 
 }
