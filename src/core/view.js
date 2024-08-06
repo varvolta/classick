@@ -147,6 +147,10 @@ class View {
 		})
 	}
 
+	setContent(content) {
+		this.node.innerHTML = content
+	}
+
 	getfullRect() {
 		return this.node.getBoundingClientRect()
 	}
