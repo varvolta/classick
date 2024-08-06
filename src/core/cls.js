@@ -1,4 +1,4 @@
-const classes = (...classes) => {
+const cls = (...classes) => {
 	const combined = []
 	for (let i = 0; i < classes.length; i++) {
 		const _class = classes[i]
@@ -17,4 +17,4 @@ const classes = (...classes) => {
 	return combined.join(' ')
 }
 
-export default classes
+export default cls

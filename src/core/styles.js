@@ -1,4 +1,5 @@
 import { kebabCase } from '../utils/cases.js'
+import Raw from './raw.js'
 
 class Styles {
 
@@ -72,19 +73,11 @@ class Styles {
 		}
 	}
 
-	static import(path) {
-		return new Promise((resolve, reject) => {
-			fetch(path)
-				.then((response) => resolve(response.text()))
-				.catch(reject)
-		})
-	}
-
 	static {
 		(async () => {
-			this.add(null, await Styles.import(import.meta.resolve('../assets/styles/normalize.css')))
-			this.add(null, await Styles.import(import.meta.resolve('../assets/styles/easing.css')))
-			this.add(null, await Styles.import(import.meta.resolve('../assets/styles/fonts.css')))
+			this.add(null, await Raw.import(import.meta.resolve('../assets/styles/normalize.css')))
+			this.add(null, await Raw.import(import.meta.resolve('../assets/styles/easing.css')))
+			this.add(null, await Raw.import(import.meta.resolve('../assets/styles/fonts.css')))
 		})()
 	}
 

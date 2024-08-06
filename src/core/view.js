@@ -1,7 +1,7 @@
 import { kebabCase } from '../utils/cases.js'
 import { methodsOf } from '../utils/methods.js'
 import attributes from './attributes.js'
-import _classes from './classes.js'
+import cls from './cls.js'
 import allEvents from './events.js'
 import observable from './observable.js'
 import Styles from './styles.js'
@@ -40,7 +40,7 @@ class View {
 			if (className) {
 				classes.unshift(className)
 			}
-			this.node.className = _classes(...classes)
+			this.node.className = cls(...classes)
 		} else {
 			// noinspection JSValidateTypes
 			this.node = document.createDocumentFragment()
