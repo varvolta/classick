@@ -24,7 +24,7 @@ class Playground extends View {
 		super()
 		// console.log(platform())
 
-		const text = new Text({ html: 'TEST TEXT' })
+		const text = new Text({ content: 'TEST TEXT' })
 		const button = new Button({})
 		this.append(text, button)
 		text.props.a = 5

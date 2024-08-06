@@ -1,6 +1,6 @@
 {
 	"name": "classick",
-	"version": "0.1",
+	"version": "0.1.0",
 	"description": "Classick",
 	"main": "src/index.js",
 	"types": "src/index.d.ts",

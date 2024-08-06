@@ -17,7 +17,7 @@ class View {
 		styles,
 		classes = [],
 		type = 'div',
-		html,
+		content,
 		children = [],
 		tabIndex = View.autoTabIndex ? View.tabIndexCounter++ : undefined
 	} = {}) {
@@ -95,7 +95,7 @@ class View {
 		})
 
 		// Set html content
-		if (html) this.node.innerHTML = html
+		if (content) this.node.innerHTML = content
 
 		// Set attributes if not fragment
 		if (type !== 'fragment') {
@@ -113,7 +113,7 @@ class View {
 				delete attrs.data
 			}
 
-			// Set 'aria' attributes
+			// Set 'aria' attributes from 'attrs'
 			if ('aria' in attrs && typeof attrs.aria === 'object') {
 				for (const [key, value] of Object.entries(attrs.aria)) {
 					attrs[`aria-${key}`] = value
@@ -265,18 +265,21 @@ class View {
 		const index = this.parent.children.indexOf(this)
 		this.parent.children.splice(index + 1, 0, view)
 		view.parent = this.parent
+		return this
 	}
 
 	addClass(...classes) {
 		for (const className of classes) {
 			this.node.classList.add(className)
 		}
+		return this
 	}
 
 	removeClass(...classes) {
 		for (const className of classes) {
 			this.node.classList.remove(className)
 		}
+		return this
 	}
 
 	clear() {
