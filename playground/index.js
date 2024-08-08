@@ -1,4 +1,4 @@
-import { View, Document, platform, Import } from '../src/index.js'
+import { View, Document, platform, Import, Router } from '../src/index.js'
 const styles = await Import.raw(import.meta.resolve('./styles.css'))
 
 // for Electron and Chromium only
@@ -15,86 +15,62 @@ class Input extends View {
 	}
 
 	$any$hello(...args) {
-		console.log(...args)
+		// console.log(...args)
 	}
 
-	_asd() { }
-}
-
-
-class Text2 extends View {
-	constructor() {
-		super()
-	}
-
-
-
-	// onMount() {
-	// 	console.log('mounted')
-	// }
-
-
-	// $hello(...args) {
-	// 	console.log(...args)
-	// 	// this.state.any = 56
-	// }
-
-	// $any(...args) {
-	// 	// console.log(...args)
-	// 	// this.state.any = 57
-	// }
-
-	$hello(_, value) {
-		this.setContent(value)
-	}
-
+	_asd() {}
 }
 
 class Playground extends View {
 	constructor() {
 		super()
-		console.log(platform())
+		// console.log(platform())
 
-		this.state.name = 'Tigran'
-
+		this.state.name = 'Worlds'
 
 		const input = new Input({
-			type: 'input', classes: 'input-number', attrs: {
-				value: 'tigran', onChange: (e) => {
-					// console.log(e.target.value)
+			type: 'input',
+			classes: 'input-number',
+			attrs: {
+				value: 'playground',
+				onChange: (e) => {
+					console.log(e.target.value)
 					this.state.name = e.target.value
 				}
 			}
 		})
 
-		// const text3 = new Text3({ content: 'TEST TEXT 3' })
-		// input.node.addEventListener('keypress', (e) => {
-		// 	console.log(e)
-		// })
-
-		this.refs.text = new Text2()
-		// text.state.any = 'world3'
-
-		this.append(input, this.refs.text)
-
-		// text3.state.hello = {
-		// 	just: 'world'
-		// }
-		// text3.state.hello.just = 'world 2'
-
-		// delete text.state.any
-		// text.props.asd = 'obj'
-		// text.props.asd = 'obj2'
+		this.append(input)
 	}
 
-	$name(_, value) {
-		this.refs.text.state.hello = value
+	$name(key, value) {
+		// console.log(key, value)
 	}
 
 	onLayout(rect) {
 		// console.log(rect)
 	}
-
 }
 
-Document.render(new Playground(), '#root')
+const routes = [
+	{
+		path: '/',
+		view: new Playground()
+	},
+	{
+		path: 'input',
+		view: new Input({
+			type: 'input',
+			classes: 'input-number',
+			attrs: {
+				value: 'input',
+				onChange: (e) => {
+					console.log(e.target.value)
+					this.state.name = e.target.value
+				}
+			}
+		})
+	}
+]
+
+new Router(routes)

@@ -10,11 +10,10 @@ import Caller from './core/caller.js'
 import Api from './core/api.js'
 import View from './core/view.js'
 import Global from './core/global.js'
+import Router from './core/router.js'
 
-import './core/navigator.js'
-
-const Classick = { attributes, observable, Document, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global }
+const Classick = { attributes, observable, Document, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global, Router }
 
 export default Classick
 
-export { attributes, observable, Document, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global }
+export { attributes, observable, Document, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global, Router }

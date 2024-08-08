@@ -1,5 +1,5 @@
 class Document {
-	static render(view, root) {
+	static render(view, root = '#root') {
 		if (typeof root === 'string') root = document.querySelector(root)
 
 		if (!(root instanceof HTMLElement)) return

@@ -147,11 +147,15 @@ class View {
 		})
 	}
 
+	getContent() {
+		return this.node.innerHTML
+	}
+
 	setContent(content) {
 		this.node.innerHTML = content
 	}
 
-	getfullRect() {
+	getFullRect() {
 		return this.node.getBoundingClientRect()
 	}
 
@@ -213,7 +217,6 @@ class View {
 			this.node.remove()
 		}
 		this.onUnmount()
-		return this
 	}
 
 	insertAt(index, view) {

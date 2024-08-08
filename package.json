@@ -8,6 +8,9 @@
 	"files": [
 		"/src"
 	],
+	"scripts": {
+		"dev": "live-server"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/varvolta/classick.git"
