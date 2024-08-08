@@ -15,10 +15,15 @@ class Input extends View {
 	}
 
 	$any$hello(...args) {
-		// console.log(...args)
+		console.log(...args)
 	}
 
 	_asd() {}
+
+	onChange(e) {
+		console.log('onChange', e.target.value)
+		// this.state.name = e.target.value
+	}
 }
 
 class Playground extends View {
@@ -44,32 +49,37 @@ class Playground extends View {
 	}
 
 	$name(key, value) {
-		// console.log(key, value)
+		console.log(key, value)
 	}
 
 	onLayout(rect) {
-		// console.log(rect)
+		console.log(rect)
 	}
 }
 
 const routes = [
 	{
 		path: '/',
-		view: new Playground()
+		view: () => new Playground()
 	},
 	{
 		path: 'input',
-		view: new Input({
-			type: 'input',
-			classes: 'input-number',
-			attrs: {
-				value: 'input',
-				onChange: (e) => {
-					console.log(e.target.value)
-					this.state.name = e.target.value
+		view: () =>
+			new Input({
+				type: 'input',
+				classes: 'input-number',
+				attrs: {
+					value: 'input'
+					// onChange: (e) => {
+					// 	console.log(e.target.value)
+					// 	this.state.name = e.target.value
+					// }
 				}
-			}
-		})
+			})
+	},
+	{
+		path: '*',
+		view: () => new View({ content: '404' })
 	}
 ]
 

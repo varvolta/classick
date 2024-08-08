@@ -1,6 +1,6 @@
-const observable = (initial = {}, ...listeners) => {
-	const ignore = ['$', 'raw']
+const ignore = ['$', 'raw']
 
+const observable = (initial = {}, ...listeners) => {
 	const call = (key, value, previous, operation) => {
 		if (ignore.includes(key) || value === previous) return true
 		listeners.forEach((listener) => {
@@ -8,7 +8,7 @@ const observable = (initial = {}, ...listeners) => {
 		})
 	}
 
-	const handler = {
+	const proxy = new Proxy(initial, {
 		get(target, key) {
 			if (key === 'observable') return true
 			if (key === 'listeners') return listeners
@@ -31,18 +31,17 @@ const observable = (initial = {}, ...listeners) => {
 			call(key, undefined, target[key], 'delete')
 			return delete target[key]
 		}
-	}
+	})
 
-	const proxy = new Proxy(initial, handler)
-
-	proxy.$ = {}
-	proxy.$.subscribe = (listener) => {
-		if (listeners.includes(listener)) return
-		listeners.push(listener)
-	}
-	proxy.$.unsubscribe = (listener) => {
-		if (!listeners.includes(listener)) return
-		listeners.splice(listeners.indexOf(listener), 1)
+	proxy.$ = {
+		subscribe(listener) {
+			if (listeners.includes(listener)) return
+			listeners.push(listener)
+		},
+		unsubscribe(listener) {
+			if (!listeners.includes(listener)) return
+			listeners.splice(listeners.indexOf(listener), 1)
+		}
 	}
 
 	return proxy
