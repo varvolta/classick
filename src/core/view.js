@@ -7,27 +7,13 @@ import observable from './observable.js'
 import Styles from './styles.js'
 
 class View {
-	static tabIndexCounter = 0
-	static autoTabIndex = false
+	listenersAC = new AbortController()
 
-	constructor({
-		props = {},
-		attrs = {},
-		state = {},
-		styles,
-		classes = [],
-		type = 'div',
-		content,
-		children = [],
-		tabIndex = View.autoTabIndex ? View.tabIndexCounter++ : undefined
-	} = {}) {
+	constructor({ attrs = {}, state = {}, styles, classes = [], type = 'div', content, children = [] } = {}) {
 		this.attrs = attrs
-		// needs to be checked
-		// this.props = observable(props)
 		this.type = type
 		this.children = children
 		this.parent = null
-		if (tabIndex) this.tabIndex = tabIndex
 		this.refs = {}
 
 		if (!Array.isArray(classes) && typeof classes === 'string') {
@@ -46,29 +32,29 @@ class View {
 			this.node = document.createDocumentFragment()
 		}
 
-		if (tabIndex) this.node.tabIndex = tabIndex
-
 		// Set styles
 		if (typeof styles === 'object' || typeof styles === 'string') {
-			if (!Array.isArray(styles)) {
-				styles = [styles]
-			}
+			if (!Array.isArray(styles)) styles = [styles]
 			Styles.add(this, ...styles)
 		}
 
 		// Set class events
-		const inner = ['onMount', 'onUnmount', 'onLayout', 'onState', 'onAttr']
+		const inner = ['onMount', 'onUnmount', 'onLayout', 'onState', 'onAttr', 'onChildMount']
 		const methods = methodsOf(this)
 		for (const method of methods) {
 			if (!method.startsWith('on') || inner.includes(method)) continue
 			const eventName = method.slice(2).toLowerCase()
 			if (!events.includes(eventName)) continue
 			const listener = this[method].bind(this)
-			this.node.addEventListener(eventName, (event) => {
-				// TODO: Check if propagation canceling is ok
-				event.stopPropagation()
-				listener(event)
-			})
+			this.node.addEventListener(
+				eventName,
+				(event) => {
+					// TODO: Check if propagation canceling is ok
+					event.stopPropagation()
+					listener(event)
+				},
+				{ signal: this.listenersAC.signal }
+			)
 		}
 
 		// Set argument events
@@ -76,16 +62,9 @@ class View {
 			if (key.startsWith('on')) {
 				delete attrs[key]
 				listener = listener.bind(this)
-				this.node.addEventListener(key.slice(2).toLowerCase(), listener)
+				this.node.addEventListener(key.slice(2).toLowerCase(), listener, { signal: this.listenersAC.signal })
 			}
 		}
-
-		// Set props
-		this.onProps = this.onProps.bind(this)
-		this.props = observable(props, this.onProps)
-		Object.entries(this.props.raw).forEach(([key, value]) => {
-			if (key !== '$') this.onProps(key, value, undefined, 'init')
-		})
 
 		// Set state
 		this.onState = this.onState.bind(this)
@@ -191,7 +170,9 @@ class View {
 	}
 
 	onUnmount() {
+		// Don't allow fragments
 		if (!(this.node instanceof Element)) return
+
 		this.resizeObserver?.disconnect()
 	}
 
@@ -203,12 +184,9 @@ class View {
 		this.#observableHandler(key, value, previous, operation, '$')
 	}
 
-	onProps(key, value, previous, operation) {
-		this.#observableHandler(key, value, previous, operation, '_')
-	}
+	onAttr(key, value) {}
 
-	onAttr(key, value) {
-	}
+	onChildMount(child) {}
 
 	remove() {
 		if (this.parent) {
@@ -219,11 +197,9 @@ class View {
 		this.onUnmount()
 	}
 
-	insertAt(index, view) {
-	}
+	insertAt(index, view) {}
 
-	removeAt(index) {
-	}
+	removeAt(index) {}
 
 	append(...views) {
 		views.forEach((view) => {
@@ -231,6 +207,7 @@ class View {
 				view.parent = this
 				this.children.push(view)
 				this.node.append(view.node)
+				this.onChildMount(view)
 				view.onMount()
 			}
 		})
@@ -292,6 +269,11 @@ class View {
 		this.children = []
 		this.node.innerHTML = ''
 		return this
+	}
+
+	destroy() {
+		this.listenersAC.abort()
+		this.remove()
 	}
 }
 

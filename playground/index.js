@@ -5,22 +5,16 @@ const styles = await Import.raw(import.meta.resolve('./styles.css'))
 // import styles from './styles.css' assert { type: 'css' }
 
 class Input extends View {
-	constructor({ content, classes, type, attrs }) {
-		super({ content, classes, styles, type, attrs })
+	constructor({ content, classes, attrs }) {
+		super({ content, classes, styles, type: 'input', attrs })
 	}
 
 	onMount() {
-		// console.log('mounted')
-		this.state.any = 'ererer'
+		super.onMount()
+		console.log('mounted input')
 	}
 
-	$any$hello(...args) {
-		console.log(...args)
-	}
-
-	_asd() {}
-
-	onChange(e) {
+	onKeyDown(e) {
 		console.log('onChange', e.target.value)
 		// this.state.name = e.target.value
 	}
@@ -28,32 +22,41 @@ class Input extends View {
 
 class Playground extends View {
 	constructor() {
-		super()
+		super({ state: { hello: 'world' } })
 		// console.log(platform())
 
-		this.state.name = 'Worlds'
+		// this.state.any = 'Worlds2'
 
 		const input = new Input({
-			type: 'input',
-			classes: 'input-number',
 			attrs: {
-				value: 'playground',
-				onChange: (e) => {
-					console.log(e.target.value)
-					this.state.name = e.target.value
-				}
+				value: 'playground'
 			}
 		})
+
+		this.refs.input = input
 
 		this.append(input)
 	}
 
-	$name(key, value) {
-		console.log(key, value)
+	// onState(key, value, prev, operation) {
+	// 	console.log(key, value, prev, operation)
+	// }
+
+	$hello(key, value, prev, operation) {
+		console.log(key, value, prev, operation)
 	}
 
 	onLayout(rect) {
 		console.log(rect)
+	}
+
+	onMount() {
+		super.onMount()
+		console.log('mounted playground')
+	}
+
+	onChildMount(child) {
+		console.log('mounted playground child')
 	}
 }
 
@@ -66,14 +69,8 @@ const routes = [
 		path: 'input',
 		view: () =>
 			new Input({
-				type: 'input',
-				classes: 'input-number',
 				attrs: {
 					value: 'input'
-					// onChange: (e) => {
-					// 	console.log(e.target.value)
-					// 	this.state.name = e.target.value
-					// }
 				}
 			})
 	},
