@@ -1,13 +1,15 @@
-class Document {
-	static render(view, root = '#root') {
-		if (typeof root === 'string') root = document.querySelector(root)
+import View from './view.js'
+
+class Doc {
+	static render(view: View, root: string | HTMLElement = '#root') {
+		if (typeof root === 'string') root = document.querySelector(root) as HTMLElement
 
 		if (!(root instanceof HTMLElement)) return
 
 		root.innerHTML = ''
 
 		root.style.position = 'fixed'
-		root.style.inset = 0
+		root.style.inset = '0'
 		// Fix for vscode liveserver script visibility
 		root.style.backgroundColor = 'white'
 
@@ -19,4 +21,4 @@ class Document {
 	}
 }
 
-export default Document
+export default Doc

@@ -1,14 +1,16 @@
 const ignore = ['$', 'raw']
 
-const observable = (initial = {}, ...listeners) => {
-	const call = (key, value, previous, operation) => {
-		if (ignore.includes(key) || value === previous) return true
+type TTarget = Record<string | symbol, any>
+
+const observable = (initial = {}, ...listeners: Function[]) => {
+	const call = (key: string | symbol, value: any, previous: any, operation: string) => {
+		if (typeof key === 'string' && (ignore.includes(key) || value === previous)) return true
 		listeners.forEach((listener) => {
 			if (typeof listener === 'function') listener?.(key, value, previous, operation)
 		})
 	}
 
-	const proxy = new Proxy(initial, {
+	const proxy = new Proxy<TTarget>(initial, {
 		get(target, key) {
 			if (key === 'observable') return true
 			if (key === 'listeners') return listeners
@@ -34,11 +36,11 @@ const observable = (initial = {}, ...listeners) => {
 	})
 
 	proxy.$ = {
-		subscribe(listener) {
+		subscribe(listener: Function) {
 			if (listeners.includes(listener)) return
 			listeners.push(listener)
 		},
-		unsubscribe(listener) {
+		unsubscribe(listener: Function) {
 			if (!listeners.includes(listener)) return
 			listeners.splice(listeners.indexOf(listener), 1)
 		}

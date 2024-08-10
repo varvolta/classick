@@ -6,11 +6,37 @@ import { innerEvents, allEvents } from './events.js'
 import observable from './observable.js'
 import Styles from './styles.js'
 
+type TView = Partial<{
+	attrs: Record<string, any>
+	props: Record<string, any>
+	state: Record<string, any>
+	styles: object | string | null
+	classes: string[] | string
+	type: string
+	content: string | null
+	children: View[]
+}>
+
+type TRect = {
+	x: number
+	y: number
+	width: number
+	height: number
+}
+
 class View {
 	listenersAC = new AbortController()
+	type: string
+	children: View[]
+	parent: View | null
+	refs: Record<string, View>
+	node: HTMLElement | DocumentFragment
+	attrs: ProxyHandler<object> = {}
+	props: ProxyHandler<object>
+	state: ProxyHandler<object>
+	resizeObserver: ResizeObserver | null = null
 
-	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] } = {}) {
-		this.attrs = attrs
+	constructor({ attrs = {}, props = {}, state = {}, styles = null, classes = [], type = 'div', content, children = [] }: TView = {}) {
 		this.type = type
 		this.children = children
 		this.parent = null
@@ -28,14 +54,13 @@ class View {
 			}
 			this.node.className = cls(...classes)
 		} else {
-			// noinspection JSValidateTypes
 			this.node = document.createDocumentFragment()
 		}
 
 		// Set styles
-		if (typeof styles === 'object' || typeof styles === 'string') {
+		if ((styles && typeof styles === 'object') || typeof styles === 'string') {
 			if (!Array.isArray(styles)) styles = [styles]
-			Styles.add(this, ...styles)
+			Styles.add(this, ...(styles as string[]))
 		}
 
 		// Set class events
@@ -44,6 +69,7 @@ class View {
 			if (!method.startsWith('on') || innerEvents.includes(method)) continue
 			const eventName = method.slice(2).toLowerCase()
 			if (!allEvents.includes(eventName)) continue
+			// @ts-ignore
 			const listener = this[method].bind(this)
 			this.node.addEventListener(
 				eventName,
@@ -68,6 +94,7 @@ class View {
 		// Set props
 		this.onProps = this.onProps.bind(this)
 		this.props = observable(props, this.onProps)
+		// @ts-ignore
 		Object.entries(this.props.raw).forEach(([key, value]) => {
 			if (key !== '$') this.onProps(key, value, undefined, 'init')
 		})
@@ -75,18 +102,19 @@ class View {
 		// Set state
 		this.onState = this.onState.bind(this)
 		this.state = observable(state, this.onState)
+		// @ts-ignore
 		Object.entries(this.state.raw).forEach(([key, value]) => {
 			if (key !== '$') this.onState(key, value, undefined, 'init')
 		})
 
 		// Set html content
-		if (content) this.node.innerHTML = content
+		if (content && this.node instanceof HTMLElement) this.node.innerHTML = content
 
 		// Set attributes if not fragment
 		if (type !== 'fragment') {
 			// Set 'style' from 'attrs'
 			if ('style' in attrs && typeof attrs.style === 'object') {
-				Styles.apply(this.node, Styles.parse(attrs.style))
+				Styles.apply(this.node as HTMLElement, Styles.parse(attrs.style))
 				delete attrs.style
 			}
 
@@ -106,24 +134,26 @@ class View {
 				delete attrs.aria
 			}
 
-			this.attrs = attributes(attrs, this.node, this.onAttr)
+			this.attrs = attributes(attrs, this.node as HTMLElement, this.onAttr)
 		}
 
 		// add predefined children and render them
 		this.append(...children)
 	}
 
-	#observableHandler(key, value, previous, operation, getter) {
+	#observableHandler(key: string, value: any, previous: any, operation: string, getter: string) {
 		// Promise.resolve() or setTimeout is needed to skip the first cycle
 		Promise.resolve().then(() => {
 			if (previous === value) return
 			const methods = methodsOf(this)
+			// @ts-ignore
 			this[getter]?.(key, value, previous, operation)
 			for (const method of methods) {
 				// Check for chained states keys change
 				if (method.includes(getter)) {
 					const keys = method.split(getter)
 					if (keys.includes(key)) {
+						// @ts-ignore
 						this[method]?.(key, value, previous, operation)
 					}
 				}
@@ -132,32 +162,40 @@ class View {
 	}
 
 	getContent() {
-		return this.node.innerHTML
+		if (this.node instanceof HTMLElement) return this.node.innerHTML
+		return null
 	}
 
-	setContent(content) {
-		this.node.innerHTML = content
+	setContent(content: string) {
+		if (this.node instanceof HTMLElement) this.node.innerHTML = content
 	}
 
 	getFullRect() {
-		return this.node.getBoundingClientRect()
+		if (this.node instanceof HTMLElement) return this.node.getBoundingClientRect()
 	}
 
 	getRect() {
-		const { x, y, width, height } = this.node.getBoundingClientRect()
-		if (this.parent) {
-			const rect = this.parent.node.getBoundingClientRect()
-			return { x: x - rect.x, y: y - rect.y, width, height }
-		} else {
-			return { x, y, width, height }
+		if (this.node instanceof HTMLElement) {
+			const { x, y, width, height } = this.node.getBoundingClientRect()
+			if (this.parent) {
+				if (this.parent.node instanceof HTMLElement) {
+					const rect = this.parent.node.getBoundingClientRect()
+					return { x: x - rect.x, y: y - rect.y, width, height }
+				}
+			} else {
+				return { x, y, width, height }
+			}
 		}
+		return null
 	}
 
-	setRect(rect) {
-		this.node.style.left = rect.x + 'px'
-		this.node.style.top = rect.y + 'px'
-		this.node.style.width = rect.width + 'px'
-		this.node.style.height = rect.height + 'px'
+	setRect(rect: TRect) {
+		if (this.node instanceof HTMLElement) {
+			this.node.style.left = rect.x + 'px'
+			this.node.style.top = rect.y + 'px'
+			this.node.style.width = rect.width + 'px'
+			this.node.style.height = rect.height + 'px'
+		}
 	}
 
 	onMount() {
@@ -181,36 +219,36 @@ class View {
 		this.resizeObserver?.disconnect()
 	}
 
-	onLayout(rect) {
+	onLayout(rect: TRect) {
 		// console.log('onLayout', rect, this.constructor.name)
 	}
 
-	onProps(key, value, previous, operation) {
+	onProps(key: string, value: any, previous: any, operation: string) {
 		this.#observableHandler(key, value, previous, operation, '_')
 	}
 
-	onState(key, value, previous, operation) {
+	onState(key: string, value: any, previous: any, operation: string) {
 		this.#observableHandler(key, value, previous, operation, '$')
 	}
 
-	onAttr(key, value) {}
+	onAttr(key: string, value: any, previous: any, operation: string) {}
 
-	onChildMount(child) {}
+	onChildMount(child: View) {}
 
 	remove() {
 		if (this.parent) {
 			this.parent.children.splice(this.parent.children.indexOf(this), 1)
 			this.parent = null
-			this.node.remove()
+			if (this.node instanceof HTMLElement) this.node.remove()
 		}
 		this.onUnmount()
 	}
 
-	insertAt(index, view) {}
+	insertAt(index: number, view: View) {}
 
-	removeAt(index) {}
+	removeAt(index: number) {}
 
-	append(...views) {
+	append(...views: View[]) {
 		views.forEach((view) => {
 			if (view) {
 				view.parent = this
@@ -223,7 +261,7 @@ class View {
 		return this
 	}
 
-	prepend(...views) {
+	prepend(...views: View[]) {
 		views.reverse()
 		views.forEach((view) => {
 			if (!view) return
@@ -235,7 +273,7 @@ class View {
 		return this
 	}
 
-	appendTo(view) {
+	appendTo(view: View) {
 		this.remove()
 		this.parent = view
 		view.children.push(this)
@@ -244,7 +282,8 @@ class View {
 		return this
 	}
 
-	replaceWith(view) {
+	replaceWith(view: View) {
+		if (!this.parent) return
 		this.parent.node.replaceChild(this.node, view.node)
 		this.parent.children[this.parent.children.indexOf(this)] = view
 		view.parent = this.parent
@@ -252,31 +291,36 @@ class View {
 		return this
 	}
 
-	addSibling(view) {
-		this.parent.node.parentNode.insertBefore(view.node, this.node.nextSibling)
+	addSibling(view: View) {
+		if (!this.parent) return
+		if (this.parent?.node instanceof HTMLElement) {
+			this.parent.node.parentNode?.insertBefore(view.node, this.node.nextSibling)
+		}
 		const index = this.parent.children.indexOf(this)
 		this.parent.children.splice(index + 1, 0, view)
 		view.parent = this.parent
 		return this
 	}
 
-	addClass(...classes) {
-		for (const className of classes) {
-			this.node.classList.add(className)
-		}
+	addClass(...classes: string[]) {
+		if (this.node instanceof HTMLElement)
+			for (const className of classes) {
+				this.node.classList.add(className)
+			}
 		return this
 	}
 
-	removeClass(...classes) {
-		for (const className of classes) {
-			this.node.classList.remove(className)
-		}
+	removeClass(...classes: string[]) {
+		if (this.node instanceof HTMLElement)
+			for (const className of classes) {
+				this.node.classList.remove(className)
+			}
 		return this
 	}
 
 	clear() {
 		this.children = []
-		this.node.innerHTML = ''
+		if (this.node instanceof HTMLElement) this.node.innerHTML = ''
 		return this
 	}
 

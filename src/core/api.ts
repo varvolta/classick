@@ -1,8 +1,10 @@
 class Api {
-	#token
+	#token: string
+	#url: string
 
-	constructor(...paths) {
-		this.url = paths.join('/')
+	constructor(...paths: string[]) {
+		this.#token = ''
+		this.#url = paths.join('/')
 	}
 
 	get token() {
@@ -13,18 +15,18 @@ class Api {
 		this.#token = value
 	}
 
-	request(path, options) {
+	request(path: string, options: RequestInit) {
 		options = {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
-				...(this.#token ? { Authorization: `Bearer ${this.#token}` } : {})
+				...(this.#token?.length ? { Authorization: `Bearer ${this.#token}` } : {})
 			},
 			...options
 		}
 
-		let url = this.url
+		let url = this.#url
 		if (path?.length) url += '/' + path
 
 		return new Promise((resolve, reject) => {
@@ -38,11 +40,11 @@ class Api {
 		})
 	}
 
-	get(path, options = {}) {
+	get(path: string, options: RequestInit = {}) {
 		return this.request(path, options)
 	}
 
-	post(path, payload, options = {}) {
+	post(path: string, payload: any, options: RequestInit = {}) {
 		return this.request(path, {
 			method: 'POST',
 			body: JSON.stringify(payload),
@@ -50,7 +52,7 @@ class Api {
 		})
 	}
 
-	put(path, payload, options = {}) {
+	put(path: string, payload: any, options: RequestInit = {}) {
 		return this.request(path, {
 			method: 'PUT',
 			body: JSON.stringify(payload),
@@ -58,7 +60,7 @@ class Api {
 		})
 	}
 
-	delete(path, payload, options = {}) {
+	delete(path: string, payload: any, options: RequestInit = {}) {
 		return this.request(path, {
 			method: 'DELETE',
 			body: payload ? JSON.stringify(payload) : undefined,

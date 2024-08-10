@@ -1,8 +1,10 @@
-import { View, Document, platform, Import, Router } from '../src/index.js'
-const styles = await Import.raw(import.meta.resolve('./styles.css'))
+import { View, platform, Import, Router } from '../dist/index.js'
+const styles = await Import.raw('styles.css')
 
 // for Electron and Chromium only
 // import styles from './styles.css' assert { type: 'css' }
+
+console.log(styles)
 
 class Input extends View {
 	constructor({ content, classes, attrs }) {
@@ -15,7 +17,7 @@ class Input extends View {
 	}
 
 	onKeyDown(e) {
-		console.log('onChange', e.target.value)
+		console.log('onKeyDown', e.target.value)
 		// this.state.name = e.target.value
 	}
 }
@@ -23,7 +25,7 @@ class Input extends View {
 class Playground extends View {
 	constructor() {
 		super({ state: { hello: 'world' } })
-		// console.log(platform())
+		console.log(platform())
 
 		// this.state.any = 'Worlds2'
 
@@ -33,7 +35,13 @@ class Playground extends View {
 			}
 		})
 
+		input.attrs.az = '5'
+
 		this.refs.input = input
+
+		setTimeout(() => {
+			this.state.anything = 'Nothing'
+		}, 3000)
 
 		this.append(input)
 	}
@@ -43,6 +51,10 @@ class Playground extends View {
 	// }
 
 	$hello(key, value, prev, operation) {
+		console.log(key, value, prev, operation)
+	}
+
+	$anything(key, value, prev, operation) {
 		console.log(key, value, prev, operation)
 	}
 

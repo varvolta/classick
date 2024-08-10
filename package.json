@@ -2,9 +2,13 @@
 	"name": "classick",
 	"version": "0.2.2",
 	"description": "Classick",
-	"main": "src/index.js",
-	"types": "src/index.d.ts",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"type": "module",
+	"scripts": {
+		"prepublish": "yarn build",
+		"build": "rm -rf ./dist/ && tsc"
+	},
 	"files": [
 		"/src"
 	],
@@ -23,5 +27,8 @@
 	"bugs": {
 		"url": "https://github.com/varvolta/classick/issues"
 	},
-	"homepage": "https://github.com/varvolta/classick#readme"
+	"homepage": "https://github.com/varvolta/classick#readme",
+	"devDependencies": {
+		"typescript": "^5.5.4"
+	}
 }

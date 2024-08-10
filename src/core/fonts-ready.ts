@@ -1,19 +1,19 @@
 let loaded = false
 let listening = false
-let callbacks = new Set()
+let callbacks: Set<Function> | undefined = new Set()
 
-const fontsReady = (callback) => {
+const fontsReady = (callback: Function) => {
 	if (loaded) {
-		callbacks.delete(callback)
+		callbacks?.delete(callback)
 		return callback?.()
 	}
-	callbacks.add(callback)
+	callbacks?.add(callback)
 	if (!listening) {
 		listening = true
 		document.fonts.ready.then(({ status }) => {
 			if (status === 'loaded') {
 				loaded = true
-				callbacks.forEach((callback) => callback?.())
+				callbacks?.forEach((callback) => callback?.())
 				callbacks = undefined
 			}
 		})
