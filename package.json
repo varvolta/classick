@@ -1,6 +1,6 @@
 {
 	"name": "classick",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Classick",
 	"main": "src/index.js",
 	"types": "src/index.d.ts",
@@ -8,9 +8,6 @@
 	"files": [
 		"/src"
 	],
-	"scripts": {
-		"dev": "live-server"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/varvolta/classick.git"

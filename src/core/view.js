@@ -114,18 +114,17 @@ class View {
 	}
 
 	#observableHandler(key, value, previous, operation, getter) {
-		// TODO: Promise.resolve() or setTimeout is needed to skip the first cycle
+		// Promise.resolve() or setTimeout is needed to skip the first cycle
 		Promise.resolve().then(() => {
-			if (previous !== value) {
-				const methods = methodsOf(this)
-				this[getter]?.(key, value, previous, operation)
-				for (const method of methods) {
-					// Check for chained states keys change
-					if (method.includes(getter)) {
-						const keys = method.split(getter)
-						if (keys.includes(key)) {
-							this[method]?.(key, value, previous, operation)
-						}
+			if (previous === value) return
+			const methods = methodsOf(this)
+			this[getter]?.(key, value, previous, operation)
+			for (const method of methods) {
+				// Check for chained states keys change
+				if (method.includes(getter)) {
+					const keys = method.split(getter)
+					if (keys.includes(key)) {
+						this[method]?.(key, value, previous, operation)
 					}
 				}
 			}
