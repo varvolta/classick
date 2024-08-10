@@ -2,14 +2,14 @@ import { kebabCase } from '../utils/cases.js'
 import { methodsOf } from '../utils/methods.js'
 import attributes from './attributes.js'
 import cls from './cls.js'
-import events from './events.js'
+import { innerEvents, allEvents } from './events.js'
 import observable from './observable.js'
 import Styles from './styles.js'
 
 class View {
 	listenersAC = new AbortController()
 
-	constructor({ attrs = {}, state = {}, styles, classes = [], type = 'div', content, children = [] } = {}) {
+	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] } = {}) {
 		this.attrs = attrs
 		this.type = type
 		this.children = children
@@ -39,12 +39,11 @@ class View {
 		}
 
 		// Set class events
-		const inner = ['onMount', 'onUnmount', 'onLayout', 'onState', 'onAttr', 'onChildMount']
 		const methods = methodsOf(this)
 		for (const method of methods) {
-			if (!method.startsWith('on') || inner.includes(method)) continue
+			if (!method.startsWith('on') || innerEvents.includes(method)) continue
 			const eventName = method.slice(2).toLowerCase()
-			if (!events.includes(eventName)) continue
+			if (!allEvents.includes(eventName)) continue
 			const listener = this[method].bind(this)
 			this.node.addEventListener(
 				eventName,
@@ -65,6 +64,13 @@ class View {
 				this.node.addEventListener(key.slice(2).toLowerCase(), listener, { signal: this.listenersAC.signal })
 			}
 		}
+
+		// Set props
+		this.onProps = this.onProps.bind(this)
+		this.props = observable(props, this.onProps)
+		Object.entries(this.props.raw).forEach(([key, value]) => {
+			if (key !== '$') this.onProps(key, value, undefined, 'init')
+		})
 
 		// Set state
 		this.onState = this.onState.bind(this)
@@ -178,6 +184,10 @@ class View {
 
 	onLayout(rect) {
 		// console.log('onLayout', rect, this.constructor.name)
+	}
+
+	onProps(key, value, previous, operation) {
+		this.#observableHandler(key, value, previous, operation, '_')
 	}
 
 	onState(key, value, previous, operation) {
