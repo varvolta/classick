@@ -7,7 +7,7 @@
 	"type": "module",
 	"scripts": {
 		"prepublish": "yarn build",
-		"build": "rm -rf ./dist/ && tsc"
+		"build": "rm -rf ./dist/ && tsc && cp -r ./src/assets ./dist/assets"
 	},
 	"files": [
 		"/src"

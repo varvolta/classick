@@ -1,9 +1,9 @@
-export const methodsOf = (object) => {
+export const methodsOf = (object: any) => {
 	if (!object) return []
-	let keys = []
+	let keys: string[] = []
 	let _object = object // IMPORTANT: Needed to not throw error when accessing a getter
 
-	const methods = (property, i, properties) =>
+	const methods = (property: string, i: number, properties: string[]) =>
 		typeof _object[property] === 'function' &&
 		property !== 'constructor' &&
 		(i === 0 || property !== properties[i - 1]) && // not overriding in this prototype
