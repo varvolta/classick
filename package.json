@@ -1,6 +1,6 @@
 {
 	"name": "classick",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Classick",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
 		"build": "rm -rf ./dist/ && tsc && cp -r ./src/assets ./dist/assets"
 	},
 	"files": [
-		"/src"
+		"/dist"
 	],
 	"repository": {
 		"type": "git",
