@@ -11,7 +11,6 @@ class Styles {
 				if (view?.node instanceof HTMLElement) Styles.apply(view.node, Styles.parse(style))
 			} else if (typeof style === 'string') {
 				const styleElement = document.createElement('style')
-				styleElement.style.display = 'none'
 				styleElement.appendChild(document.createTextNode(style))
 				document.head.appendChild(styleElement)
 			}

@@ -7,8 +7,8 @@ const styles = await Import.raw('styles.css')
 console.log(styles)
 
 class Input extends View {
-	constructor({ content, classes, attrs }) {
-		super({ content, classes, styles, type: 'input', attrs })
+	constructor(setup) {
+		super({ ...setup, styles, type: 'input' })
 	}
 
 	onMount() {

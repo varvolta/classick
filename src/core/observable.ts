@@ -1,6 +1,6 @@
-const ignore = ['$', 'raw']
+import { TProxyTarget } from '../types/core.js'
 
-type TTarget = Record<string | symbol, any>
+const ignore = ['$', 'raw']
 
 const observable = (initial = {}, ...listeners: Function[]) => {
 	const call = (key: string | symbol, value: any, previous: any, operation: string) => {
@@ -10,7 +10,7 @@ const observable = (initial = {}, ...listeners: Function[]) => {
 		})
 	}
 
-	const proxy = new Proxy<TTarget>(initial, {
+	const proxy = new Proxy<TProxyTarget>(initial, {
 		get(target, key) {
 			if (key === 'observable') return true
 			if (key === 'listeners') return listeners

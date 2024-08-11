@@ -1,10 +1,6 @@
 import Doc from './doc.js'
 import View from './view.js'
-
-type TRoute = {
-	path: string
-	view: Function
-}
+import { TRoute } from '../types/core.js'
 
 export default class Router {
 	#routes: TRoute[]

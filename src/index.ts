@@ -11,9 +11,10 @@ import Api from './core/api.js'
 import View from './core/view.js'
 import Global from './core/global.js'
 import Router from './core/router.js'
+import { TView, TRect, TMargin, TRoute, TProxyTarget } from './types/core.js'
 
 const Classick = { attributes, observable, Doc, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global, Router }
 
 export default Classick
 
-export { attributes, observable, Doc, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global, Router }
+export { attributes, observable, Doc, cls, fontsReady, platform, Styles, Import, Caller, Api, View, Global, Router, TView, TRect, TMargin, TRoute, TProxyTarget }

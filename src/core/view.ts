@@ -5,24 +5,7 @@ import cls from './cls.js'
 import { innerEvents, allEvents } from './events.js'
 import observable from './observable.js'
 import Styles from './styles.js'
-
-type TView = Partial<{
-	attrs: Record<string, any>
-	props: Record<string, any>
-	state: Record<string, any>
-	styles: object | string | null
-	classes: string[] | string
-	type: string
-	content: string | null
-	children: View[]
-}>
-
-type TRect = {
-	x: number
-	y: number
-	width: number
-	height: number
-}
+import { TView, TRect } from '../types/core.js'
 
 class View {
 	listenersAC = new AbortController()

@@ -1,16 +1,4 @@
-type TRect = {
-	x: number
-	y: number
-	width: number
-	height: number
-}
-
-type TMargin = {
-	top: number
-	right: number
-	bottom: number
-	left: number
-}
+import { TRect, TMargin } from '../types/core.js'
 
 export const marginizeRect = (rect: TRect, margin: TMargin) => {
 	return {
