@@ -10,8 +10,6 @@ class Doc {
 
 		root.style.position = 'fixed'
 		root.style.inset = '0'
-		// Fix for vscode liveserver script visibility
-		root.style.backgroundColor = 'white'
 
 		root.append(view.node)
 

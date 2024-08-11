@@ -4,10 +4,10 @@ export type TView = Partial<{
 	attrs: Record<string, any>
 	props: Record<string, any>
 	state: Record<string, any>
-	styles: object | string | null
+	styles?: object | string
 	classes: string[] | string
 	type: string
-	content: string | null
+	content?: string
 	children: View[]
 }>
 

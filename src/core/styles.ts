@@ -3,7 +3,7 @@ import Import from './import.js'
 import View from './view.js'
 
 class Styles {
-	static add(view: View | null, ...styles: any[]) {
+	static add(view?: View, ...styles: any[]) {
 		styles.forEach((style) => {
 			if (style instanceof CSSStyleSheet) {
 				document.adoptedStyleSheets.push(style)
@@ -26,7 +26,7 @@ class Styles {
 	}
 
 	static var = (name: string, { value = undefined, parse = false, fallback = '' } = {}) => {
-		if (!name) return null
+		if (!name) return undefined
 		if (!name.startsWith('--')) name = '--' + name
 		const element = document.documentElement
 		if (value) {
@@ -77,11 +77,11 @@ class Styles {
 	static {
 		;(async () => {
 			// @ts-ignore
-			this.add(null, await Import.raw(import.meta.resolve('../assets/styles/normalize.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/normalize.css')))
 			// @ts-ignore
-			this.add(null, await Import.raw(import.meta.resolve('../assets/styles/easing.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/easing.css')))
 			// @ts-ignore
-			this.add(null, await Import.raw(import.meta.resolve('../assets/styles/fonts.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/fonts.css')))
 		})()
 	}
 }

@@ -3,10 +3,10 @@ import { TProxyTarget } from '../types/core.js'
 const ignore = ['$', 'raw']
 
 const observable = (initial = {}, ...listeners: Function[]) => {
-	const call = (key: string | symbol, value: any, previous: any, operation: string) => {
-		if (typeof key === 'string' && (ignore.includes(key) || value === previous)) return true
+	const call = (key: string | symbol, current: any, previous: any, operation: string) => {
+		if (typeof key === 'string' && (ignore.includes(key) || current === previous)) return true
 		listeners.forEach((listener) => {
-			if (typeof listener === 'function') listener?.(key, value, previous, operation)
+			if (typeof listener === 'function') listener?.(key, current, previous, operation)
 		})
 	}
 
@@ -18,11 +18,11 @@ const observable = (initial = {}, ...listeners: Function[]) => {
 
 			return target[key]
 		},
-		set(target, key, value) {
+		set(target, key, current) {
 			const previous = target[key]
 
-			target[key] = value
-			call(key, value, previous, 'change')
+			target[key] = current
+			call(key, current, previous, 'change')
 
 			return true
 		},
