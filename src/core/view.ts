@@ -92,6 +92,7 @@ class View {
 
 		// Set attributes if not fragment
 		if (type !== 'fragment') {
+			// TODO: move to attributes file
 			// Set 'style' from 'attrs'
 			if ('style' in attrs && typeof attrs.style === 'object') {
 				Styles.apply(this.node as HTMLElement, Styles.parse(attrs.style))
@@ -123,8 +124,8 @@ class View {
 
 	#observableHandler(key: string, current: any, previous: any, operation: string, getter: string) {
 		// Promise.resolve() or setTimeout is needed to skip the first cycle
+		if (previous === current) return
 		Promise.resolve().then(() => {
-			if (previous === current) return
 			const methods = methodsOf(this)
 			// @ts-ignore
 			this[getter]?.(key, current, previous, operation)

@@ -68,6 +68,7 @@ class Styles {
 	// TODO: Add to string method
 
 	static apply(node: HTMLElement, style: any) {
+		node.style.cssText = ''
 		for (let [key, value] of Object.entries(style)) {
 			// @ts-ignore
 			node.style[key] = value
