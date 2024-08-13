@@ -1,4 +1,4 @@
-import { TProxyTarget } from '../types/core.js'
+import { TProxyTarget } from '../../types/core.js'
 
 const ignore = ['$', 'raw']
 

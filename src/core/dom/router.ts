@@ -1,6 +1,6 @@
 import Doc from './doc.js'
-import View from './view.js'
-import { TRoute } from '../types/core.js'
+import View from '../ui/view.js'
+import { TRoute } from '../../types/core.js'
 
 export default class Router {
 	#routes: TRoute[]

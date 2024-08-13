@@ -1,4 +1,4 @@
-import observable from './observable.js'
+import observable from '../proxies/observable.js'
 
 class Global {
 	static state = observable()

@@ -1,4 +1,4 @@
-import View from '../core/view.js'
+import View from '../core/ui/view.js'
 
 export type TView = Partial<{
 	attrs: Record<string, any>

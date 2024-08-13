@@ -1,6 +1,6 @@
-import { kebabCase } from '../utils/cases.js'
-import Import from './import.js'
-import View from './view.js'
+import { kebabCase } from '../../utils/cases.js'
+import Import from '../data/import.js'
+import View from '../ui/view.js'
 
 class Styles {
 	static add(view?: View, ...styles: any[]) {
@@ -26,7 +26,6 @@ class Styles {
 	}
 
 	static var = (name: string, { value = undefined, parse = false, fallback = '' } = {}) => {
-		if (!name) return undefined
 		if (!name.startsWith('--')) name = '--' + name
 		const element = document.documentElement
 		if (value) {
@@ -78,11 +77,11 @@ class Styles {
 	static {
 		;(async () => {
 			// @ts-ignore
-			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/normalize.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../../assets/styles/normalize.css')))
 			// @ts-ignore
-			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/easing.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../../assets/styles/easing.css')))
 			// @ts-ignore
-			this.add(undefined, await Import.raw(import.meta.resolve('../assets/styles/fonts.css')))
+			this.add(undefined, await Import.raw(import.meta.resolve('../../assets/styles/fonts.css')))
 		})()
 	}
 }

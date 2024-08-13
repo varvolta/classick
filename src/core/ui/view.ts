@@ -1,11 +1,11 @@
-import { kebabCase } from '../utils/cases.js'
-import { methodsOf } from '../utils/methods.js'
-import attributes from './attributes.js'
-import cls from './cls.js'
-import { innerEvents, allEvents } from './events.js'
-import observable from './observable.js'
-import Styles from './styles.js'
-import { TView, TRect } from '../types/core.js'
+import { kebabCase } from '../../utils/cases.js'
+import { methodsOf } from '../../utils/methods.js'
+import attributes from '../proxies/attributes.js'
+import cls from '../../utils/cls.js'
+import { innerEvents, allEvents } from '../dom/events.js'
+import observable from '../proxies/observable.js'
+import Styles from '../dom/styles.js'
+import { TView, TRect } from '../../types/core.js'
 
 class View {
 	listenersAC = new AbortController()

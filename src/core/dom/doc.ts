@@ -1,4 +1,4 @@
-import View from './view.js'
+import View from '../ui/view.js'
 
 class Doc {
 	static render(view: View, root: string | HTMLElement = '#root') {
