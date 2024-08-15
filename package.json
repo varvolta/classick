@@ -1,6 +1,6 @@
 {
 	"name": "classick",
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"description": "Classick",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
