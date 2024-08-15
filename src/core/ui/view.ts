@@ -30,8 +30,7 @@ class View {
 
 		if (type !== 'fragment') {
 			this.node = document.createElement(type)
-			const className = attrs.class || this.constructor.name !== 'View' ? kebabCase(this.constructor.name) : undefined
-			if (className) classes.unshift(className)
+			if (attrs.class) classes.unshift(attrs.class)
 			this.node.className = cls(...classes)
 		} else {
 			this.node = document.createDocumentFragment()
