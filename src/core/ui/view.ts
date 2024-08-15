@@ -1,11 +1,10 @@
-import { kebabCase } from '../../utils/cases.js'
 import { methodsOf } from '../../utils/methods.js'
 import attributes from '../proxies/attributes.js'
 import cls from '../../utils/cls.js'
 import { innerEvents, allEvents } from '../dom/events.js'
 import observable from '../proxies/observable.js'
 import Styles from '../dom/styles.js'
-import { TView, TRect } from '../../types/core.js'
+import { TView, TRect, TProxyTarget } from '../../types/core.js'
 
 class View {
 	listenersAC = new AbortController()
@@ -14,9 +13,9 @@ class View {
 	parent?: View = undefined
 	refs: Record<string, View>
 	node: HTMLElement | DocumentFragment
-	attrs: ProxyHandler<object> = {}
-	props: ProxyHandler<object>
-	state: ProxyHandler<object>
+	attrs: ProxyHandler<TProxyTarget> = {}
+	props: ProxyHandler<TProxyTarget>
+	state: ProxyHandler<TProxyTarget>
 	resizeObserver?: ResizeObserver
 
 	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TView = {}) {
@@ -65,6 +64,7 @@ class View {
 		// Set argument events
 		for (let [key, listener] of Object.entries(attrs)) {
 			if (key.startsWith('on')) {
+				// Check if exists in inner and all methods. If not then do nothing.
 				delete attrs[key]
 				listener = listener.bind(this)
 				this.node.addEventListener(key.slice(2).toLowerCase(), listener, { signal: this.listenersAC.signal })
