@@ -5,7 +5,7 @@ import { TRoute } from '../../types/core.js'
 export default class Router {
 	#routes: TRoute[]
 
-	constructor(routes = []) {
+	constructor(routes: TRoute[]) {
 		this.#routes = routes
 		window.addEventListener('hashchange', () => this.#redirect())
 		this.#redirect()
