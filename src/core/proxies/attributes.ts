@@ -1,5 +1,7 @@
+import { TProxyTarget } from '../../types/core.js'
+
 const attributes = (initial = {}, node: HTMLElement, ...listeners: Function[]) => {
-	return new Proxy(initial, {
+	return new Proxy<TProxyTarget>(initial, {
 		get(_, key: string) {
 			return node.getAttribute(key.toLowerCase())
 		},
