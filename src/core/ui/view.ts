@@ -13,9 +13,9 @@ class View {
 	parent?: View = undefined
 	refs: Record<string, View>
 	node: HTMLElement | DocumentFragment
-	attrs: ProxyHandler<TProxyTarget> = {}
-	props: ProxyHandler<TProxyTarget>
-	state: ProxyHandler<TProxyTarget>
+	attrs: TProxyTarget = {}
+	props: TProxyTarget
+	state: TProxyTarget
 	resizeObserver?: ResizeObserver
 
 	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TView = {}) {
