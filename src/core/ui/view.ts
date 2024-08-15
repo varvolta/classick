@@ -31,7 +31,8 @@ class View {
 		if (type !== 'fragment') {
 			this.node = document.createElement(type)
 			if (attrs.class) classes.unshift(attrs.class)
-			this.node.className = cls(...classes)
+			const clss = cls(...classes)
+			if (clss.length) this.node.className = clss
 		} else {
 			this.node = document.createDocumentFragment()
 		}
