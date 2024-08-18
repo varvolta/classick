@@ -1,8 +1,8 @@
-import { TView } from '../types/core.js'
+import { TSetup } from '../types/core.js'
 import View from '../core/ui/view.js'
 
 class Fragment extends View {
-	constructor(setup: TView) {
+	constructor(setup: TSetup) {
 		super({ ...setup, type: 'fragment' })
 	}
 }
