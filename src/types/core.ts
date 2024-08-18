@@ -1,16 +1,5 @@
 import View from '../core/ui/view.js'
 
-export type TView = Partial<{
-	attrs: Record<string, any>
-	props: Record<string, any>
-	state: Record<string, any>
-	styles?: object | string
-	classes: string[] | string
-	type: string
-	content?: string
-	children: View[]
-}>
-
 export type TRect = {
 	x: number
 	y: number
@@ -28,6 +17,17 @@ export type TMargin = {
 export type TRoute = {
 	path: string
 	view: Function
+}
+
+export type TSetup = {
+	attrs?: Record<string, any>
+	props?: Record<string, any>
+	state?: Record<string, any>
+	styles?: object | string
+	classes?: string[] | string
+	type?: string
+	content?: string
+	children?: View[]
 }
 
 export type TObservable = Record<string | symbol, any>

@@ -4,7 +4,7 @@ import cls from '../../utils/cls.js'
 import { innerEvents, allEvents } from '../dom/events.js'
 import observable from '../proxies/observable.js'
 import Styles from '../dom/styles.js'
-import { TView, TRect, TObservable } from '../../types/core.js'
+import { TSetup, TRect, TObservable } from '../../types/core.js'
 
 class View {
 	listenersAC = new AbortController()
@@ -18,7 +18,7 @@ class View {
 	state: TObservable
 	resizeObserver?: ResizeObserver
 
-	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TView = {}) {
+	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TSetup = {}) {
 		this.type = type
 		this.children = children
 		this.refs = {}
