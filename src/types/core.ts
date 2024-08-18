@@ -30,4 +30,4 @@ export type TRoute = {
 	view: Function
 }
 
-export type TProxyTarget = Record<string | symbol, any>
+export type TObservable = Record<string | symbol, any>

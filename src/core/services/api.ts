@@ -1,4 +1,4 @@
-class Api {
+abstract class Api {
 	#token: string
 	#url: string
 

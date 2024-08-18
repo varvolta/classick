@@ -1,7 +1,7 @@
-import { TProxyTarget } from '../../types/core.js'
+import { TObservable } from '../../types/core.js'
 
 const attributes = (initial = {}, node: HTMLElement, ...listeners: Function[]) => {
-	return new Proxy<TProxyTarget>(initial, {
+	return new Proxy<TObservable>(initial, {
 		get(_, key: string) {
 			return node.getAttribute(key.toLowerCase())
 		},

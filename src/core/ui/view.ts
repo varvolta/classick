@@ -4,7 +4,7 @@ import cls from '../../utils/cls.js'
 import { innerEvents, allEvents } from '../dom/events.js'
 import observable from '../proxies/observable.js'
 import Styles from '../dom/styles.js'
-import { TView, TRect, TProxyTarget } from '../../types/core.js'
+import { TView, TRect, TObservable } from '../../types/core.js'
 
 class View {
 	listenersAC = new AbortController()
@@ -13,9 +13,9 @@ class View {
 	parent?: View = undefined
 	refs: Record<string, View>
 	node: HTMLElement | DocumentFragment
-	attrs: TProxyTarget = {}
-	props: TProxyTarget
-	state: TProxyTarget
+	attrs: TObservable = {}
+	props: TObservable
+	state: TObservable
 	resizeObserver?: ResizeObserver
 
 	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TView = {}) {
@@ -123,7 +123,7 @@ class View {
 	}
 
 	#observableHandler(key: string, current: any, previous: any, operation: string, getter: string) {
-		// Promise.resolve() is needed to skip the first cycle\
+		// Promise.resolve() is needed to skip the first cycle
 		if (previous === current) return
 		Promise.resolve().then(() => {
 			const methods = methodsOf(this)

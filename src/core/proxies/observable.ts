@@ -1,4 +1,4 @@
-import { TProxyTarget } from '../../types/core.js'
+import { TObservable } from '../../types/core.js'
 
 const ignore = ['$', 'raw']
 
@@ -10,7 +10,7 @@ const observable = (initial = {}, ...listeners: Function[]) => {
 		})
 	}
 
-	const proxy = new Proxy<TProxyTarget>(initial, {
+	const proxy = new Proxy<TObservable>(initial, {
 		get(target, key) {
 			if (key === 'observable') return true
 			if (key === 'listeners') return listeners
