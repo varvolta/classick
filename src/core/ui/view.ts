@@ -64,7 +64,9 @@ class View {
 		// Set argument events
 		for (let [key, listener] of Object.entries(attrs)) {
 			if (key.startsWith('on')) {
-				// Check if exists in inner and all methods. If not then do nothing.
+				// TODO: Check if exists in inner and all methods. If not then do nothing.
+				const eventName = key.slice(2).toLowerCase()
+				if (!innerEvents.includes(key) && !allEvents.includes(eventName)) continue
 				delete attrs[key]
 				listener = listener.bind(this)
 				this.node.addEventListener(key.slice(2).toLowerCase(), listener, { signal: this.listenersAC.signal })
