@@ -18,12 +18,12 @@ class View {
 	state: TObservable
 	resizeObserver?: ResizeObserver
 
-	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', content, children = [] }: TSetup = {}) {
+	constructor({ attrs = {}, props = {}, state = {}, styles, classes = [], type = 'div', html, children = [] }: TSetup = {}) {
 		this.type = type
 		this.children = children
 		this.refs = {}
 
-		if (!Array.isArray(classes) && typeof classes === 'string') {
+		if (typeof classes === 'string') {
 			classes = classes.split(' ')
 		}
 
@@ -37,7 +37,7 @@ class View {
 		}
 
 		// Set styles
-		if ((styles && typeof styles === 'object') || typeof styles === 'string') {
+		if (styles && (typeof styles === 'object' || typeof styles === 'string')) {
 			if (!Array.isArray(styles)) styles = [styles]
 			Styles.add(this, ...(styles as string[]))
 		}
@@ -90,7 +90,9 @@ class View {
 		})
 
 		// Set html content
-		if (content && this.node instanceof HTMLElement) this.node.innerHTML = content
+		if (this.node instanceof HTMLElement) {
+			this.node.innerHTML = html ?? this.html()
+		}
 
 		// Set attributes if not fragment
 		if (type !== 'fragment') {
@@ -138,19 +140,21 @@ class View {
 					if (keys.includes(key)) {
 						// @ts-ignore
 						this[method]?.(key, current, previous, operation)
+						// TODO: call this.html
+						if (this.node instanceof HTMLElement) this.node.innerHTML = this.html()
 					}
 				}
 			}
 		})
 	}
 
-	getContent() {
+	getHtml() {
 		if (this.node instanceof HTMLElement) return this.node.innerHTML
 		return null
 	}
 
-	setContent(content: string) {
-		if (this.node instanceof HTMLElement) this.node.innerHTML = content
+	setHtml(html: string) {
+		if (this.node instanceof HTMLElement) this.node.innerHTML = html
 	}
 
 	getFullRect() {
@@ -217,6 +221,10 @@ class View {
 	onAttr(key: string, current: any, previous: any, operation: string) {}
 
 	onChildMount(child: View) {}
+
+	html(): string {
+		return ''
+	}
 
 	remove() {
 		if (this.parent) {

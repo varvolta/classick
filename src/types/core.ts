@@ -26,7 +26,7 @@ export type TSetup = {
 	styles?: object | string
 	classes?: string[] | string
 	type?: string
-	content?: string
+	html?: string
 	children?: View[]
 }
 

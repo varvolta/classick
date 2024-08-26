@@ -16,7 +16,7 @@ export default class Router {
 		if (!path.length) path = '/'
 		let view = this.#routes.find((value) => value.path === path)?.view
 		if (!view) view = this.#routes.find((value) => value.path === '*')?.view
-		if (!view) view = () => new View({ content: '404: Hash location is not handled' })
+		if (!view) view = () => new View({ html: '404: Hash location is not handled' })
 		Doc.render(view())
 	}
 }
